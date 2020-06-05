@@ -1,18 +1,15 @@
+import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:privateroom/screens/drawing_screen/consts.dart';
 import 'package:privateroom/screens/drawing_screen/drawing_points.dart';
 import 'package:privateroom/screens/drawing_screen/painter.dart';
 import 'package:privateroom/utility/ui_constants.dart';
 import 'package:privateroom/screens/drawing_screen/alert_dialog_box.dart';
-
-enum colorFor {
-  pen,
-  background,
-}
 
 class DrawingScreen extends StatefulWidget {
   @override
@@ -22,11 +19,15 @@ class DrawingScreen extends StatefulWidget {
 class _DrawingScreenState extends State<DrawingScreen> {
   // sketching property
 
-  Color backgroundColor = Colors.white;
-  double strokeWidth = 5.0;
-  Color penColor = Colors.black;
+  PictureRecorder _recorder;
+  Canvas _canvas;
+
+  Color backgroundColor = Colors.black;
+  Color penColor = Colors.white;
+  double strokeWidth = 3.0;
   Size availableSize;
 
+  final dpr = window.devicePixelRatio;
   final List<DrawingPoints> _points = [];
 
   void onPanStart(DragStartDetails details) {
@@ -119,31 +120,26 @@ class _DrawingScreenState extends State<DrawingScreen> {
   }
 
   void generateImage() async {
-    final recorder = PictureRecorder();
+    final picture = _recorder.endRecording();
 
-    final canvas = Canvas(
-      recorder,
-      Rect.fromPoints(
-        Offset(0.0, 0.0),
-        Offset(availableSize.width, availableSize.height),
-      ),
-    );
-
-    final picture = recorder.endRecording();
-
-    final scale = 10;
-
-    final imageWidth = availableSize.width ~/ scale;
-    final imageHeight = availableSize.height ~/ scale;
+    final imageWidth = (availableSize.width * dpr).toInt();
+    final imageHeight = (availableSize.height * dpr).toInt();
 
     final img = await picture.toImage(imageWidth, imageHeight);
     final pngBytes = await img.toByteData(format: ImageByteFormat.png);
+    Uint8List imageBytes = Uint8List.view(pngBytes.buffer);
 
-    Navigator.of(context).pop(pngBytes);
+    Navigator.of(context).pop(imageBytes);
   }
 
   void initializeRecording() {
-    //
+    _recorder = PictureRecorder();
+    _canvas = Canvas(_recorder);
+    _canvas.scale(dpr, dpr);
+  }
+
+  void quit() {
+    Navigator.pop(context);
   }
 
   @override
@@ -154,6 +150,13 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var quitItem = SpeedDialChild(
+      child: Icon(FontAwesomeIcons.reply),
+      backgroundColor: Colors.black,
+      label: 'Exit',
+      labelStyle: kLabelTextStyle,
+      onTap: quit,
+    );
     var sendItem = SpeedDialChild(
       child: Icon(FontAwesomeIcons.share),
       backgroundColor: Colors.red,
@@ -161,7 +164,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
       labelStyle: kLabelTextStyle,
       onTap: generateImage,
     );
-
     var clearItem = SpeedDialChild(
       child: Icon(FontAwesomeIcons.times),
       backgroundColor: Colors.blue,
@@ -169,7 +171,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
       labelStyle: kLabelTextStyle,
       onTap: () => _points.clear(),
     );
-
     var penColorItem = SpeedDialChild(
       child: Icon(FontAwesomeIcons.palette),
       backgroundColor: Colors.green,
@@ -177,7 +178,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
       labelStyle: kLabelTextStyle,
       onTap: () => chooseColor(colorFor.pen),
     );
-
     var strokeSizeItem = SpeedDialChild(
       child: Icon(FontAwesomeIcons.dotCircle),
       backgroundColor: Colors.orange,
@@ -185,7 +185,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
       labelStyle: kLabelTextStyle,
       onTap: selectStrokeSize,
     );
-
     var backgroundColorItem = SpeedDialChild(
       child: Icon(FontAwesomeIcons.paintRoller),
       backgroundColor: Colors.purple,
@@ -205,6 +204,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
       elevation: 10.0,
       shape: CircleBorder(),
       children: [
+        quitItem,
         sendItem,
         clearItem,
         penColorItem,
@@ -215,6 +215,9 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
     availableSize = MediaQuery.of(context).size;
 
+    _canvas.drawColor(backgroundColor, BlendMode.srcOver);
+    var _drawing = Drawing(points: _points)..paint(_canvas, availableSize);
+
     return Scaffold(
       body: Container(
         color: backgroundColor,
@@ -223,9 +226,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
           onPanUpdate: onPanUpdate,
           onPanEnd: onPanEnd,
           child: CustomPaint(
-            painter: Drawing(
-              points: _points,
-            ),
+            painter: _drawing,
             size: availableSize,
           ),
         ),

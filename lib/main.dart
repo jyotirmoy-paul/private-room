@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:privateroom/screens/drawing_screen/drawing_screen.dart';
+import 'package:privateroom/screens/dashboard_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Private Room',
       debugShowCheckedModeBanner: false,
-      home: DrawingScreen(),
+      home: DashboardScreen(),
     );
   }
 }

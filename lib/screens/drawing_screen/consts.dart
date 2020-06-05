@@ -1,0 +1,4 @@
+enum colorFor {
+  pen,
+  background,
+}
