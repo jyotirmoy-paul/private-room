@@ -167,21 +167,19 @@ class _ForegroundScreenState extends State<ForegroundScreen> {
       ),
     );
 
-    var mainCol = Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          headingText,
-          sizedBoxHeight,
-          titleText,
-          sizedBoxHeight,
-          textFieldRoomId,
-          textFieldRoomPassword,
-          sizedBoxHeight,
-          enterRoomButton,
-        ],
-      ),
+    var mainCol = Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        headingText,
+        sizedBoxHeight,
+        titleText,
+        sizedBoxHeight,
+        textFieldRoomId,
+        textFieldRoomPassword,
+        sizedBoxHeight,
+        enterRoomButton,
+      ],
     );
 
     var navButton = Align(

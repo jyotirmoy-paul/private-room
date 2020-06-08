@@ -25,6 +25,13 @@ const kGeneralTextStyle = TextStyle(
   color: kWhite,
 );
 
+const kTitleTextStyle = TextStyle(
+  fontSize: 22.0,
+  fontFamily: 'OpenSans',
+  fontWeight: FontWeight.w600,
+  color: kBlack,
+);
+
 const kHeadingTextStyle = TextStyle(
   fontSize: 45.0,
   fontFamily: 'OpenSans',
