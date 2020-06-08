@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:privateroom/screens/dashboard_screen.dart';
+import 'package:privateroom/screens/dashboard_screen/dashboard_screen.dart';
 
 void main() {
   runApp(MyApp());

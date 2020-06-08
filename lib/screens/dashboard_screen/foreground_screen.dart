@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:privateroom/screens/messaging_screen/messaging_screen.dart';
@@ -7,12 +6,18 @@ import 'package:privateroom/services/encryption_service.dart';
 import 'package:privateroom/utility/firebase_constants.dart';
 import 'package:privateroom/utility/ui_constants.dart';
 
-class DashboardScreen extends StatefulWidget {
+class ForegroundScreen extends StatefulWidget {
+  final navBarOnPressed;
+
+  ForegroundScreen({
+    @required this.navBarOnPressed,
+  });
+
   @override
-  _DashboardScreenState createState() => _DashboardScreenState();
+  _ForegroundScreenState createState() => _ForegroundScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _ForegroundScreenState extends State<ForegroundScreen> {
   final _firestore = Firestore.instance;
   final _roomIdController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -29,9 +34,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  void navigate() {
+  void navigate(var roomData) {
     final route = MaterialPageRoute(
-      builder: (ctx) => MessagingScreen(),
+      builder: (ctx) => MessagingScreen(roomData: roomData),
     );
     Navigator.pushReplacement(context, route);
   }
@@ -60,7 +65,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         }
 
         if (decryptedRoomId == roomId) {
-          navigate();
+          navigate(data);
           return;
         }
       } else {
@@ -80,11 +85,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var sizedBoxHeight = SizedBox(height: 50.0);
+    var contentPadding = const EdgeInsets.symmetric(
+      horizontal: 10.0,
+    );
+
+    var sizedBoxHeight = SizedBox(
+      height: 50.0,
+    );
 
     var headingText = Text(
-      'Join a Room',
-      style: kHeadingTextStyle,
+      'Welcome to Private Chat',
+      style: kHeadingTextStyle.copyWith(
+        letterSpacing: 2.0,
+      ),
+      textAlign: TextAlign.center,
+    );
+
+    var titleText = Text(
+      'Join a room',
+      style: kGeneralTextStyle,
       textAlign: TextAlign.center,
     );
 
@@ -148,26 +167,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
 
-    var boxDecoration = BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-        colors: [
-          Color(0xff5E5C5C),
-          Color(0xff9DC5C3),
-        ],
-      ),
-    );
-
-    return Container(
-      decoration: boxDecoration,
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+    var mainCol = Expanded(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           headingText,
+          sizedBoxHeight,
+          titleText,
           sizedBoxHeight,
           textFieldRoomId,
           textFieldRoomPassword,
@@ -176,5 +183,31 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ],
       ),
     );
+
+    var navButton = Align(
+      alignment: Alignment.topLeft,
+      child: IconButton(
+        icon: Icon(
+          FontAwesomeIcons.bars,
+          color: kWhite,
+        ),
+        onPressed: widget.navBarOnPressed,
+      ),
+    );
+
+    var foregroundScreen = Container(
+      color: kSteelBlue,
+      padding: contentPadding,
+      child: SafeArea(
+        child: Stack(
+          children: <Widget>[
+            mainCol,
+            navButton,
+          ],
+        ),
+      ),
+    );
+
+    return foregroundScreen;
   }
 }
