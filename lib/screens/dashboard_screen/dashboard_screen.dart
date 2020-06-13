@@ -46,42 +46,44 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      child: Stack(
-        children: <Widget>[
-          NavBarScreen(
-            onPressed: animateBackward,
-          ),
-          AnimatedBuilder(
-            animation: _animationController,
-            builder: (ctx, _) {
-              double x = _animationController.value;
+    return Scaffold(
+      body: Container(
+        width: double.infinity,
+        child: Stack(
+          children: <Widget>[
+            NavBarScreen(
+              onPressed: animateBackward,
+            ),
+            AnimatedBuilder(
+              animation: _animationController,
+              builder: (ctx, _) {
+                double x = _animationController.value;
 
-              double translateValue = 180 * x;
-              double scaleValue = 1 - 0.25 * x;
-              double rotateYValue = -0.10 * x;
-              double setEntryValue = -0.0005 * x;
+                double translateValue = 180 * x;
+                double scaleValue = 1 - 0.25 * x;
+                double rotateYValue = -0.10 * x;
+                double setEntryValue = -0.0005 * x;
 
-              var transformMatrix = Matrix4.identity()
-                ..translate(translateValue)
-                ..scale(scaleValue)
-                ..rotateY(rotateYValue)
-                ..setEntry(3, 0, setEntryValue);
+                var transformMatrix = Matrix4.identity()
+                  ..translate(translateValue)
+                  ..scale(scaleValue)
+                  ..rotateY(rotateYValue)
+                  ..setEntry(3, 0, setEntryValue);
 
-              return Transform(
-                alignment: Alignment.center,
-                transform: transformMatrix,
-                child: AbsorbPointer(
-                  absorbing: absorbPointer,
-                  child: ForegroundScreen(
-                    navBarOnPressed: animateForward,
+                return Transform(
+                  alignment: Alignment.center,
+                  transform: transformMatrix,
+                  child: AbsorbPointer(
+                    absorbing: absorbPointer,
+                    child: ForegroundScreen(
+                      navBarOnPressed: animateForward,
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-        ],
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

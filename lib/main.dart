@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Private Room',
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: DashboardScreen()),
+      home: DashboardScreen(),
     );
   }
 }

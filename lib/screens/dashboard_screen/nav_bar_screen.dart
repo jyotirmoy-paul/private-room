@@ -30,12 +30,10 @@ class NavBarScreen extends StatelessWidget {
       onTap: onPressed,
       title: 'Close Navigation Bar',
       iconData: FontAwesomeIcons.times,
-      subTitle: '',
     );
 
     final navItemAddRoom = NavItem(
       onTap: () {
-        onPressed();
         final route = MaterialPageRoute(builder: (ctx) => AddRoomScreen());
         Navigator.push(context, route);
       },
@@ -53,23 +51,27 @@ class NavBarScreen extends StatelessWidget {
       subTitle: 'File an issue on the Github Repo',
     );
 
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: ListView(
-            children: <Widget>[
-              sizedBox10,
-              headingText,
-              sizedBox30,
-              navItemClose,
-              navItemAddRoom,
-              sizedBox30,
-              navItemReportBug,
-            ],
+    return Container(
+      color: kImperialRed.withOpacity(0.10),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                sizedBox10,
+                headingText,
+                sizedBox30,
+                navItemClose,
+                sizedBox30,
+                navItemAddRoom,
+                sizedBox30,
+                navItemReportBug,
+              ],
+            ),
           ),
-        ),
-        shrinkSizedBox,
-      ],
+          shrinkSizedBox,
+        ],
+      ),
     );
   }
 }

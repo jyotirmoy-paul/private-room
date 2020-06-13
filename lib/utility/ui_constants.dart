@@ -10,7 +10,7 @@ const kLightLabelTextStyle = TextStyle(
   fontSize: 18.0,
   fontFamily: 'OpenSans',
   fontWeight: FontWeight.w100,
-  color: kBlack,
+  color: kWhite,
 );
 
 const kLabelTextStyle = TextStyle(

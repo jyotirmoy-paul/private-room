@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:privateroom/services/encryption_service.dart';
 import 'package:privateroom/utility/firebase_constants.dart';
 import 'package:privateroom/utility/ui_constants.dart';
+import 'package:privateroom/widgets/card_text_field.dart';
 
 class AddRoomScreen extends StatefulWidget {
   @override
@@ -37,7 +39,8 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
 
     String roomId = ref.documentID;
     String roomName = inputRoomName;
-    String roomCreationDate = DateTime.now().toString();
+    String roomCreationDate =
+        DateFormat('HH:mm, dd MMMM, yyyy').format(DateTime.now());
     String encryptedRoomId =
         EncryptionService.encrypt(roomId, inputRoomPassword, roomId);
 
@@ -79,48 +82,22 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
 
     var labelText = Text(
       'To add a new room, please enter a password. After which, you will be provided with an auto-generated Room ID. Share the ID with other\'s to allow them to join your room.',
-      style: kLightLabelTextStyle.copyWith(color: kWhite),
+      style: kLightLabelTextStyle,
       textAlign: TextAlign.center,
     );
 
-    var textFieldNewRoomPassword = Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      elevation: 5.0,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.0),
-        child: TextField(
-          controller: _roomPasswordController,
-          style: kLabelTextStyle,
-          decoration: InputDecoration(
-            icon: Icon(FontAwesomeIcons.lock, color: kSteelBlue),
-            labelText: 'New Room Password',
-            labelStyle: kLightLabelTextStyle,
-            border: InputBorder.none,
-          ),
-        ),
-      ),
+    var textFieldNewRoomPassword = CardTextField(
+      controller: _roomPasswordController,
+      obscureText: true,
+      labelText: 'New Room Password',
+      keyboardType: TextInputType.visiblePassword,
+      iconData: FontAwesomeIcons.lock,
     );
 
-    var textFieldRoomName = Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      elevation: 5.0,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.0),
-        child: TextField(
-          controller: _roomNameController,
-          style: kLabelTextStyle,
-          decoration: InputDecoration(
-            icon: Icon(FontAwesomeIcons.lock, color: kSteelBlue),
-            labelText: 'Room Name',
-            labelStyle: kLightLabelTextStyle,
-            border: InputBorder.none,
-          ),
-        ),
-      ),
+    var textFieldRoomName = CardTextField(
+      controller: _roomNameController,
+      labelText: 'Room Name',
+      iconData: FontAwesomeIcons.napster,
     );
 
     var createRoomButton = RaisedButton(

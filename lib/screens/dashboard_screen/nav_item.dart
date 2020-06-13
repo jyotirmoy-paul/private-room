@@ -22,15 +22,17 @@ class NavItem extends StatelessWidget {
         title,
         style: kTitleTextStyle,
       ),
-      trailing: Icon(
+      leading: Icon(
         iconData,
         color: kImperialRed,
         size: 30,
       ),
-      subtitle: Text(
-        subTitle,
-        style: kLightLabelTextStyle,
-      ),
+      subtitle: subTitle != null
+          ? Text(
+              subTitle,
+              style: kLightLabelTextStyle.copyWith(color: kBlack),
+            )
+          : null,
     );
   }
 }
