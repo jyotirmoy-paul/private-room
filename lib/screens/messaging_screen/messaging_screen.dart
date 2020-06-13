@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:privateroom/screens/messaging_screen/widgets/bottom_sheet_menu.dart';
 import 'package:privateroom/screens/messaging_screen/widgets/chat_bubble.dart';
-import 'package:privateroom/screens/messaging_screen/widgets/floating_button.dart';
 import 'package:privateroom/screens/messaging_screen/webview_screen.dart';
 import 'package:privateroom/services/encoding_decoding_service.dart';
 import 'package:privateroom/utility/firebase_constants.dart';
@@ -27,9 +27,15 @@ class MessagingScreen extends StatefulWidget {
 class _MessagingScreenState extends State<MessagingScreen> {
   final _textMessageController = TextEditingController();
 
-  bool showWebScreen = false;
+  bool showBrowser = false;
   DocumentReference _documentRef;
   CollectionReference _chatDataCollectionRef;
+
+  void toggleBrowser() {
+    setState(() {
+      showBrowser = !showBrowser;
+    });
+  }
 
   void sendMessage(String message) {
     var _ref = _chatDataCollectionRef.document();
@@ -68,32 +74,25 @@ class _MessagingScreenState extends State<MessagingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final backButton = FloatingButton(
-      iconData: FontAwesomeIcons.chevronCircleLeft,
-      onPressed: () {
-        Navigator.pop(context);
-      },
-    );
-    final closeWebViewButton = FloatingButton(
-      iconData: FontAwesomeIcons.timesCircle,
-      onPressed: () {
-        setState(() {
-          showWebScreen = false;
-        });
-      },
-    );
-
     // bottom text area widgets
     final menuButton = Positioned.fill(
       child: Align(
         alignment: Alignment.centerLeft,
         child: MaterialButton(
-          onPressed: () {},
+          onPressed: () {
+            showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (ctx) => SingleChildScrollView(
+                child: BottomSheetMenu(toggleBrowser: toggleBrowser),
+              ),
+            );
+          },
           minWidth: 0,
           elevation: 5.0,
           color: kWhite,
           child: Icon(
-            FontAwesomeIcons.solidLaugh,
+            FontAwesomeIcons.angleDoubleUp,
             size: 25.0,
             color: kImperialRed,
           ),
@@ -176,7 +175,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            showWebScreen
+            showBrowser
                 ? WebViewScreen(documentRef: _documentRef)
                 : SizedBox.shrink(),
             Expanded(

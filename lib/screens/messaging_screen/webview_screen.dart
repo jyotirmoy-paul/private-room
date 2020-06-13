@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:privateroom/utility/firebase_constants.dart';
@@ -57,6 +55,15 @@ class _WebViewScreenState extends State<WebViewScreen> {
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (WebViewController controller) {
             _controller = controller;
+          },
+          navigationDelegate: (NavigationRequest req) {
+            widget.documentRef
+                .collection(kChatMetaDataCollection)
+                .document('data')
+                .updateData({
+              kVisitUrl: req.url,
+            });
+            return NavigationDecision.navigate;
           },
         ),
       ),

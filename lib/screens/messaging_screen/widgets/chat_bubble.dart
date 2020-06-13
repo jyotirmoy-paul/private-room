@@ -50,7 +50,8 @@ class ChatBubble extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
         margin: EdgeInsets.only(
-          bottom: 10.0,
+          bottom: 5.0,
+          top: 5.0,
           left: isMe ? 100.0 : 0.0,
           right: isMe ? 0.0 : 100.0,
         ),
