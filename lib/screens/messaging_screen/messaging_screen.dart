@@ -84,7 +84,12 @@ class _MessagingScreenState extends State<MessagingScreen> {
               isScrollControlled: true,
               context: context,
               builder: (ctx) => SingleChildScrollView(
-                child: BottomSheetMenu(toggleBrowser: toggleBrowser),
+                child: BottomSheetMenu(
+                  toggleBrowser: toggleBrowser,
+                  name: widget.name,
+                  password: widget.password,
+                  chatDataCollectionReference: _chatDataCollectionRef,
+                ),
               ),
             );
           },

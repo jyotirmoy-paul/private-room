@@ -22,8 +22,8 @@ class _DrawingScreenState extends State<DrawingScreen> {
   PictureRecorder _recorder;
   Canvas _canvas;
 
-  Color backgroundColor = Colors.black;
-  Color penColor = Colors.white;
+  Color backgroundColor = kWhite;
+  Color penColor = kImperialRed;
   double strokeWidth = 3.0;
   Size availableSize;
 
@@ -159,7 +159,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     );
     var sendItem = SpeedDialChild(
       child: Icon(FontAwesomeIcons.share),
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.deepOrange,
       label: 'Send',
       labelStyle: kLabelTextStyle,
       onTap: generateImage,
@@ -199,7 +199,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
       curve: Curves.bounceIn,
       overlayColor: Colors.black,
       overlayOpacity: 0.5,
-      backgroundColor: Colors.teal,
+      backgroundColor: kImperialRed,
       foregroundColor: Colors.white,
       elevation: 10.0,
       shape: CircleBorder(),

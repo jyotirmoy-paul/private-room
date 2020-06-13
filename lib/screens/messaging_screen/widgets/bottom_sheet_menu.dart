@@ -1,16 +1,70 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
+import 'package:privateroom/screens/drawing_screen/drawing_screen.dart';
+import 'package:privateroom/services/encoding_decoding_service.dart';
+import 'package:privateroom/utility/firebase_constants.dart';
 import 'package:privateroom/utility/ui_constants.dart';
 
 class BottomSheetMenu extends StatelessWidget {
   BottomSheetMenu({
     @required this.toggleBrowser,
+    @required this.chatDataCollectionReference,
+    @required this.name,
+    @required this.password,
   });
 
   final Function toggleBrowser;
+  final chatDataCollectionReference;
+  final String name;
+  final String password;
 
-  void openDoodleArea() {}
+  void uploadData(var imageBytes) async {
+    var _ref = chatDataCollectionReference.document();
+    var documentId = _ref.documentID;
+
+    final StorageUploadTask uploadTask =
+        FirebaseStorage.instance.ref().child(documentId).putData(imageBytes);
+
+    var url =
+        (await (await uploadTask.onComplete).ref.getDownloadURL()).toString();
+
+    Map<String, dynamic> data = {
+      kUserName: name,
+      kTimestamp: DateFormat('HH:mm, dd MMM yyyy').format(DateTime.now()),
+      kMessageBody: url,
+      kIsDoodle: true,
+    };
+
+    String encryptedData = EncodingDecodingService.encodeAndEncrypt(
+      data,
+      documentId, // using doc id as IV
+      password,
+    );
+
+    _ref.setData({
+      'data': encryptedData,
+      'id': documentId,
+      'date': DateTime.now().toIso8601String().toString(),
+    });
+  }
+
+  void openDoodleArea(var context) async {
+    MaterialPageRoute pageRoute = MaterialPageRoute(
+      builder: (ctx) => DrawingScreen(),
+    );
+
+    var imageBytes = await Navigator.of(context).push(pageRoute);
+
+    if (imageBytes == null) {
+      return;
+    }
+
+    uploadData(imageBytes);
+  }
+
   void setChatTheme() {}
 
   final sizedBoxWidth = SizedBox(width: 30.0);
@@ -40,7 +94,7 @@ class BottomSheetMenu extends StatelessWidget {
             TileItem(
               iconData: FontAwesomeIcons.pencilRuler,
               title: 'Doodle',
-              onTap: openDoodleArea,
+              onTap: () => openDoodleArea(context),
             ),
           ],
         ),
@@ -64,8 +118,8 @@ class TileItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        onTap();
         Navigator.pop(context);
+        onTap();
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

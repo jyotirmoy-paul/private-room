@@ -28,53 +28,66 @@ class ChatBubble extends StatelessWidget {
     );
 
     bool isMe = (name == chatContents[kUserName]);
+    bool isDoodle = chatContents[kIsDoodle];
 
-    final decorationSelfChat = BoxDecoration(
-      color: kImperialRed,
+    final decoration = BoxDecoration(
+      color: isMe ? kImperialRed : kImperialRed.withOpacity(0.08),
       borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(borderRadius),
-        bottomLeft: Radius.circular(borderRadius),
+        topRight: Radius.circular(isMe ? 0.0 : borderRadius),
+        bottomRight: Radius.circular(isMe ? 0.0 : borderRadius),
+        topLeft: Radius.circular(isMe ? borderRadius : 0.0),
+        bottomLeft: Radius.circular(isMe ? borderRadius : 0.0),
       ),
     );
 
-    final decorationOtherChat = BoxDecoration(
-      color: kImperialRed.withOpacity(0.08),
+    final textContent = Column(
+      crossAxisAlignment:
+          isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          chatContents[kTimestamp].toString().split(', ')[0],
+          style: kLightestTextStyle.copyWith(
+            color: isMe ? kWhite : kBlack,
+          ),
+        ),
+        SizedBox(height: 10),
+        Text(
+          chatContents[kMessageBody],
+          style: kLabelTextStyle.copyWith(
+            color: isMe ? kWhite : kBlack,
+          ),
+        ),
+      ],
+    );
+
+    final doodleContent = ClipRRect(
       borderRadius: BorderRadius.only(
-        topRight: Radius.circular(borderRadius),
-        bottomRight: Radius.circular(borderRadius),
+        topRight: Radius.circular(isMe ? 0.0 : borderRadius),
+        bottomRight: Radius.circular(isMe ? 0.0 : borderRadius),
+        topLeft: Radius.circular(isMe ? borderRadius : 0.0),
+        bottomLeft: Radius.circular(isMe ? borderRadius : 0.0),
+      ),
+      child: FadeInImage(
+        image: NetworkImage(chatContents[kMessageBody]),
+        fit: BoxFit.cover,
+        placeholder: AssetImage('assets/images/loading.gif'),
       ),
     );
 
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+        padding: isDoodle
+            ? EdgeInsets.all(1.0)
+            : EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
         margin: EdgeInsets.only(
           bottom: 5.0,
           top: 5.0,
           left: isMe ? 100.0 : 0.0,
           right: isMe ? 0.0 : 100.0,
         ),
-        decoration: isMe ? decorationSelfChat : decorationOtherChat,
-        child: Column(
-          crossAxisAlignment:
-              isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              chatContents[kTimestamp].toString().split(', ')[0],
-              style: kLightestTextStyle.copyWith(
-                color: isMe ? kWhite : kBlack,
-              ),
-            ),
-            SizedBox(height: 10),
-            Text(
-              chatContents[kMessageBody],
-              style: kLabelTextStyle.copyWith(
-                color: isMe ? kWhite : kBlack,
-              ),
-            ),
-          ],
-        ),
+        decoration: decoration,
+        child: isDoodle ? doodleContent : textContent,
       ),
     );
   }
