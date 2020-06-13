@@ -6,6 +6,13 @@ const Color kWhite = Color(0xffFFFFFF);
 const Color kSteelBlue = Color(0xff457B9D);
 const Color kBlack = Color(0xff000000);
 
+const kLightestTextStyle = TextStyle(
+  fontSize: 12.0,
+  fontFamily: 'OpenSans',
+  fontWeight: FontWeight.w900,
+  color: kBlack,
+);
+
 const kLightLabelTextStyle = TextStyle(
   fontSize: 18.0,
   fontFamily: 'OpenSans',

@@ -10,3 +10,8 @@ const kRoomCreationDate = 'roomCreationDate';
 const kRoomName = 'roomName';
 
 const kVisitUrl = 'visitUrl';
+
+const kUserName = 'userName';
+const kTimestamp = 'timestamp';
+const kMessageBody = 'messageBody';
+const kIsDoodle = 'isDoodle';
