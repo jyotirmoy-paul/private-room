@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:privateroom/utility/firebase_constants.dart';
 import 'package:privateroom/utility/ui_constants.dart';
 import 'package:privateroom/widgets/not_found.dart';
-import 'package:privateroom/widgets/room_item_widget.dart';
+import 'package:privateroom/screens/dashboard_screen/widgets/room_item_widget.dart';
 
 class ForegroundScreen extends StatefulWidget {
   final navBarOnPressed;

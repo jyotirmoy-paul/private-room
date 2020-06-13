@@ -37,6 +37,9 @@ dependencies:
   # storage
   shared_preferences: ^0.5.7+3
 
+  # browsing internet
+  webview_flutter: ^0.3.22+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

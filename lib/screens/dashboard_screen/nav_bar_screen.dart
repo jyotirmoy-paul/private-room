@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:privateroom/screens/dashboard_screen/add_room_screen.dart';
-import 'package:privateroom/screens/dashboard_screen/nav_item.dart';
+import 'package:privateroom/screens/dashboard_screen/widgets/nav_item.dart';
 import 'package:privateroom/utility/ui_constants.dart';
 
 class NavBarScreen extends StatelessWidget {
