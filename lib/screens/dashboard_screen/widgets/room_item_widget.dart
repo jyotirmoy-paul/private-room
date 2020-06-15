@@ -21,7 +21,7 @@ class RoomItemWidget extends StatelessWidget {
   final roomData;
   final showProgressIndicator;
 
-  void showError(String error, var context) {
+  void showError(String error) {
     Scaffold.of(context).showSnackBar(
       SnackBar(
         backgroundColor: kImperialRed,
@@ -72,7 +72,8 @@ class RoomItemWidget extends StatelessWidget {
           decryptedRoomId = EncryptionService.decrypt(
               actualRoomId, password, encryptedRoomId);
         } catch (_) {
-          showError('Wrong Password', context);
+          showProgressIndicator(false);
+          showError('Wrong Password');
           return;
         }
 
@@ -82,14 +83,14 @@ class RoomItemWidget extends StatelessWidget {
         }
       } else {
         showProgressIndicator(false);
-        showError('Room does not exists', context);
+        showError('Room does not exists');
       }
     } catch (e) {
       if (e.toString().toLowerCase().contains('assertion')) {
         showProgressIndicator(false);
-        showError('Password can\'t be empty', context);
+        showError('Password can\'t be empty');
       } else {
-        showError('Invalid Room ID', context);
+        showError('Invalid Room ID');
         showProgressIndicator(false);
       }
     }

@@ -183,6 +183,7 @@ class _MessagingScreenState extends State<MessagingScreen> {
             showBrowser
                 ? Browser(
                     roomId: widget.roomData[kRoomId],
+                    password: widget.password,
                     toggleBrowser: toggleBrowser,
                   )
                 : SizedBox.shrink(),

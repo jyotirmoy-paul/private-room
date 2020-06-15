@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:privateroom/screens/messaging_screen/webview/navigation_controls.dart';
+import 'package:privateroom/services/encryption_service.dart';
 import 'package:privateroom/utility/firebase_constants.dart';
 import 'package:privateroom/utility/ui_constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -10,9 +11,11 @@ class Browser extends StatefulWidget {
   Browser({
     @required this.roomId,
     @required this.toggleBrowser,
+    @required this.password,
   });
 
   final String roomId;
+  final String password;
   final Function toggleBrowser;
 
   @override
@@ -25,6 +28,14 @@ class _BrowserState extends State<Browser> {
 
   final DatabaseReference ref = FirebaseDatabase.instance.reference();
 
+  String getDecryptUrl(String data) {
+    return EncryptionService.decrypt(widget.roomId, widget.password, data);
+  }
+
+  String getEncryptedUrl(String url) {
+    return EncryptionService.encrypt(widget.roomId, widget.password, url);
+  }
+
   int flex = 1;
   void toggleFullScreen() {
     setState(() {
@@ -34,7 +45,8 @@ class _BrowserState extends State<Browser> {
 
   void bindUrl(WebViewController controller) {
     ref.child(widget.roomId).onChildChanged.listen((event) {
-      String url = event.snapshot.value;
+      String encryptedUrl = event.snapshot.value;
+      String url = getDecryptUrl(encryptedUrl);
       controller.loadUrl(url);
     });
   }
@@ -75,7 +87,8 @@ class _BrowserState extends State<Browser> {
                 },
                 javascriptChannels: <JavascriptChannel>[].toSet(),
                 onPageStarted: (url) {
-                  ref.child(widget.roomId).child(kVisitUrl).set(url);
+                  String encryptedUrl = getEncryptedUrl(url);
+                  ref.child(widget.roomId).child(kVisitUrl).set(encryptedUrl);
                 },
                 gestureNavigationEnabled: true,
               ),
