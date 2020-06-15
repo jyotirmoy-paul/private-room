@@ -21,6 +21,7 @@ class BottomSheetMenu extends StatelessWidget {
   final String name;
   final String password;
 
+  // todo: the image is not encrypted
   void uploadData(var imageBytes) async {
     var _ref = chatDataCollectionReference.document();
     var documentId = _ref.documentID;

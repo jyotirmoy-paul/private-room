@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:privateroom/screens/messaging_screen/widgets/bottom_sheet_menu.dart';
+import 'package:privateroom/screens/messaging_screen/webview/browser.dart';
 import 'package:privateroom/screens/messaging_screen/widgets/chat_bubble.dart';
-import 'package:privateroom/screens/messaging_screen/webview_screen.dart';
 import 'package:privateroom/services/encoding_decoding_service.dart';
 import 'package:privateroom/utility/firebase_constants.dart';
 import 'package:privateroom/utility/ui_constants.dart';
@@ -181,7 +181,10 @@ class _MessagingScreenState extends State<MessagingScreen> {
         child: Column(
           children: <Widget>[
             showBrowser
-                ? WebViewScreen(documentRef: _documentRef)
+                ? Browser(
+                    roomId: widget.roomData[kRoomId],
+                    toggleBrowser: toggleBrowser,
+                  )
                 : SizedBox.shrink(),
             Expanded(
               child: StreamBuilder<QuerySnapshot>(

@@ -2,7 +2,6 @@ const kRoomCollection = 'rooms';
 const kChatCollection = 'chats';
 
 const kChatDataCollection = 'chatData';
-const kChatMetaDataCollection = 'chatMetaData';
 
 const kRoomId = 'roomId';
 const kEncryptedRoomId = 'encryptedRoomId';
