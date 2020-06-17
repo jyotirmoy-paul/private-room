@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:privateroom/screens/drawing_screen/drawing_points.dart';
 
-class Drawing extends CustomPainter {
-  Drawing({
+class Painter extends CustomPainter {
+  Painter({
     @required this.points,
   });
 
@@ -28,5 +28,5 @@ class Drawing extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(Drawing oldDelegate) => true;
+  bool shouldRepaint(Painter oldDelegate) => true;
 }

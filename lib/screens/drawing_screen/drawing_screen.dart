@@ -216,7 +216,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
     availableSize = MediaQuery.of(context).size;
 
     _canvas.drawColor(backgroundColor, BlendMode.srcOver);
-    var _drawing = Drawing(points: _points)..paint(_canvas, availableSize);
+    var _painter = Painter(points: _points)..paint(_canvas, availableSize);
 
     return Scaffold(
       body: Container(
@@ -226,7 +226,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
           onPanUpdate: onPanUpdate,
           onPanEnd: onPanEnd,
           child: CustomPaint(
-            painter: _drawing,
+            painter: _painter,
             size: availableSize,
           ),
         ),
