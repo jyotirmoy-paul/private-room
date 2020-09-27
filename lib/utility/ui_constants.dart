@@ -21,7 +21,7 @@ const kLightLabelTextStyle = TextStyle(
 );
 
 const kLabelTextStyle = TextStyle(
-  fontSize: 18.0,
+  fontSize: 15.0,
   fontFamily: 'OpenSans',
   color: kBlack,
 );

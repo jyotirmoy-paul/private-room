@@ -51,9 +51,8 @@ class _AddRoomScreenState extends State<AddRoomScreen> {
       kRoomCreationDate: roomCreationDate,
     });
 
-    setState(() {
-      showProgress = false;
-    });
+    // close the screen
+    Navigator.pop(context);
   }
 
   @override

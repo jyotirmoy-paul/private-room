@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_udid/flutter_udid.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:privateroom/screens/messaging_screen/messaging_screen.dart';
 import 'package:privateroom/services/encryption_service.dart';
@@ -34,12 +35,14 @@ class RoomItemWidget extends StatelessWidget {
     );
   }
 
-  void navigate(var password, var name) {
+  void navigate(var password) async {
+    String udid = await FlutterUdid.udid;
+
     final route = MaterialPageRoute(
       builder: (ctx) => MessagingScreen(
         roomData: roomData,
         password: password,
-        name: name,
+        name: udid,
       ),
     );
 
@@ -47,8 +50,7 @@ class RoomItemWidget extends StatelessWidget {
     Navigator.push(context, route);
   }
 
-  void enterRoom(
-      String roomId, String password, String name, var context) async {
+  void enterRoom(String roomId, String password, var context) async {
     Navigator.pop(context);
 
     showProgressIndicator(true);
@@ -79,7 +81,7 @@ class RoomItemWidget extends StatelessWidget {
 
         if (decryptedRoomId == roomId) {
           showProgressIndicator(false);
-          navigate(password, name);
+          navigate(password);
         }
       } else {
         showProgressIndicator(false);
@@ -98,7 +100,6 @@ class RoomItemWidget extends StatelessWidget {
 
   void showLoginDialog(var context) {
     final passwordController = TextEditingController();
-    final nameController = TextEditingController();
 
     final alertBorder = RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(10.0),
@@ -127,11 +128,6 @@ class RoomItemWidget extends StatelessWidget {
         ),
         SizedBox(height: 10),
         CardTextField(
-          iconData: FontAwesomeIcons.userTie,
-          controller: nameController,
-          labelText: 'Enter room as name?',
-        ),
-        CardTextField(
           iconData: FontAwesomeIcons.lock,
           controller: passwordController,
           labelText: 'Password',
@@ -147,7 +143,6 @@ class RoomItemWidget extends StatelessWidget {
       onPressed: () => enterRoom(
         roomData[kRoomId],
         passwordController.text.trim(),
-        nameController.text.trim(),
         context,
       ),
       child: Text(

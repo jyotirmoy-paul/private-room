@@ -32,6 +32,9 @@ dependencies:
   flutter_speed_dial: ^1.2.5
   flutter_colorpicker: ^0.3.4
 
+  # device id
+  flutter_udid: ^1.0.1
+
 
   # Date formatting
   intl: ^0.16.1
@@ -40,7 +43,7 @@ dependencies:
   shared_preferences: ^0.5.7+3
 
   # browsing internet
-  webview_flutter: ^0.3.22+1
+  webview_flutter: ^0.3.24
 
 dev_dependencies:
   flutter_test:

@@ -44,10 +44,15 @@ class _BrowserState extends State<Browser> {
   }
 
   void bindUrl(WebViewController controller) {
-    ref.child(widget.roomId).onChildChanged.listen((event) {
+    ref.child(widget.roomId).onChildChanged.listen((event) async {
       String encryptedUrl = event.snapshot.value;
       String url = getDecryptUrl(encryptedUrl);
-      controller.loadUrl(url);
+
+      print('FROM BIND URL: $url');
+
+      // load only if the URLs are different
+      String currentUrl = await controller.currentUrl();
+      if (currentUrl != url) controller.loadUrl(url);
     });
   }
 
@@ -87,6 +92,8 @@ class _BrowserState extends State<Browser> {
                 },
                 javascriptChannels: <JavascriptChannel>[].toSet(),
                 onPageStarted: (url) {
+                  print(url);
+
                   String encryptedUrl = getEncryptedUrl(url);
                   ref.child(widget.roomId).child(kVisitUrl).set(encryptedUrl);
                 },
