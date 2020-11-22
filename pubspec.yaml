@@ -1,7 +1,7 @@
 name: privateroom
 description: A private room chat application
 
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -32,9 +32,10 @@ dependencies:
   flutter_speed_dial: ^1.2.5
   flutter_colorpicker: ^0.3.4
 
+  path_provider: ^1.6.24
+
   # device id
   flutter_udid: ^1.0.1
-
 
   # Date formatting
   intl: ^0.16.1
@@ -45,16 +46,25 @@ dependencies:
   # browsing internet
   webview_flutter: ^0.3.24
 
+  # camera
+  camera: ^0.5.8+11
+
+  # tflite
+  tflite: ^1.1.1
+
+  # image library
+  image: ^2.1.19
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 flutter:
-
   uses-material-design: true
 
   assets:
     - assets/images/
+    - assets/model/
 
   fonts:
     - family: OpenSans

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:privateroom/screens/dashboard_screen/add_room_screen.dart';
 import 'package:privateroom/screens/dashboard_screen/widgets/nav_item.dart';
+import 'package:privateroom/screens/emotion_detection_screen/emotion_detection_screen.dart';
 import 'package:privateroom/utility/ui_constants.dart';
 
 class NavBarScreen extends StatelessWidget {
@@ -51,6 +52,17 @@ class NavBarScreen extends StatelessWidget {
       subTitle: 'File an issue on the Github Repo',
     );
 
+    final navItemEmotionDetection = NavItem(
+      onTap: () {
+        final route =
+            MaterialPageRoute(builder: (ctx) => EmotionDetectionScreen());
+        Navigator.push(context, route);
+      },
+      title: 'Emotion Detection',
+      iconData: FontAwesomeIcons.solidTired,
+      subTitle: 'Detect your emotion with high accuracy',
+    );
+
     return Container(
       color: kImperialRed.withOpacity(0.10),
       child: Row(
@@ -66,6 +78,8 @@ class NavBarScreen extends StatelessWidget {
                 navItemAddRoom,
                 sizedBox30,
                 navItemReportBug,
+                sizedBox30,
+                navItemEmotionDetection,
               ],
             ),
           ),
