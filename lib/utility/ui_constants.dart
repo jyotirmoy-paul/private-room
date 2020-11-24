@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+// emoji as used in emotion prediction screen
+const kEmojiAngry = '😠';
+const kEmojiSad = '😟';
+const kEmojiHappy = '☺️';
+const kEmojiSurprised = '😮';
+const kEmojiFear = '😨';
+
 // Colors used in app
 const Color kImperialRed = Color(0xffE63946);
 const Color kWhite = Color(0xffFFFFFF);
